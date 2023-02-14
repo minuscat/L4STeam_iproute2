@@ -19,7 +19,7 @@ jobs:
         sudo apt update
     - name: Import debian rules
       run: |
-        echo "$(git describe --abbrev=0 | tr -d 'v')"
+        echo "$(git describe --tags | tr -d 'v')"
         git remote add debian $(debcheckout -d iproute2 | awk '/url/{print $2;}')
         git fetch debian
         echo "$(git describe --abbrev=0 | tr -d 'v')"
