@@ -25,7 +25,7 @@ jobs:
         git remote add debian $(debcheckout -d iproute2 | awk '/url/{print $2;}')
         git fetch debian
         echo "$(git describe --tags | tr -d 'v')"
-        git checkout debian/"$(git describe --tags | tr -d 'v')"-1 -- debian
+        git checkout debian/"$(git describe --tags | tr -d 'v')"-2 -- debian
         sudo apt build-dep iproute2
     - name: Build deb
       run: dpkg-buildpackage -b -rfakeroot -us -uc -d
