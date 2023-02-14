@@ -18,11 +18,12 @@ jobs:
         sudo sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list
         sudo apt update
     - name: Import debian rules
-      run: |        
+      run: |
+        echo "$(git describe --tags | tr -d 'v' | awk -F '-' '{print $1}')"
         git remote add debian $(debcheckout -d iproute2 | awk '/url/{print $2;}')
         git fetch debian
         echo "$(git describe --tags | tr -d 'v' | awk -F '-' '{print $1}')"
-        git checkout debian/$(git describe --tags | tr -d 'v' | awk -F '-' '{print $1}')-1 -- debian
+        git checkout debian/"$(git describe --tags | tr -d 'v' | awk -F '-' '{print $1}')"-1 -- debian
         sudo apt build-dep iproute2
     - name: Build deb
       run: dpkg-buildpackage -b -rfakeroot -us -uc -d
