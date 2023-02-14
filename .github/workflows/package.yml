@@ -8,6 +8,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+    - name: Add description
+      run: |
+        git tag v5.13.0
     - name: Download apt-get dependencies
       run: |
         sudo env DEBIAN_FRONTEND=noninteractive apt-get -y purge unattended-upgrades
@@ -19,11 +22,10 @@ jobs:
         sudo apt update
     - name: Import debian rules
       run: |
-        echo "$(git describe --tags | tr -d 'v' | awk -F '-' '{print $1}')"
         git remote add debian $(debcheckout -d iproute2 | awk '/url/{print $2;}')
         git fetch debian
-        echo "$(git describe --tags | tr -d 'v' | awk -F '-' '{print $1}')"
-        git checkout debian/"$(git describe --tags | tr -d 'v' | awk -F '-' '{print $1}')"-1 -- debian
+        echo "$(git describe --tags | tr -d 'v')"
+        git checkout debian/"$(git describe --tags | tr -d 'v')"-1 -- debian
         sudo apt build-dep iproute2
     - name: Build deb
       run: dpkg-buildpackage -b -rfakeroot -us -uc -d
