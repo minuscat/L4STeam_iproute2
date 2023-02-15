@@ -10,7 +10,7 @@ jobs:
       uses: actions/checkout@v3
     - name: Add description
       run: |
-        git tag v5.16.0
+        git tag v5.19.0
     - name: Download apt-get dependencies
       run: |
         sudo env DEBIAN_FRONTEND=noninteractive apt-get -y purge unattended-upgrades
